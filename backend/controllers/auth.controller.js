@@ -59,6 +59,7 @@ export const login=async(req,res)=>{
             username:user.username,
             _id:user._id,
             fullName:user.fullName,
+            profilepic:user.profilepic,
         })
 
         
@@ -67,7 +68,7 @@ export const login=async(req,res)=>{
     }
 }
 
-export const logout=(req,res)=>{
+export const logout=async(req,res)=>{
     try {
         res.cookie("jwt","",{maxAge:0});
         res.status(200).json({message:"Logged out sucessfuly"})

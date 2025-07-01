@@ -1,50 +1,44 @@
 import React from 'react'
+import useConversation from '../../zustand/useConversation'
+import { useSocketContext } from '../../context/SocketContext';
 
-const Conversation = () => {
-  return (
-    <>
-    <div className='flex gap-2 items-center hover:bg-[#5E81F4] rounded p-2 py-1 cursor-pointer'>
-        <div className='avatar online'>
-            <div className='w-12 rounded-full'>
-                <img className='w-12 rounded full' src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp">
-                </img>
-            </div>
-        </div>
-        <div className='flex flex-col flex-1'>
-            <div>
-                <p className='font-bold text-gray-50'>John Doe</p>
+const Conversation = ({conversation, lastIdx}) => {
+    const {selectedConversation, setSelectedConversation} = useConversation();
+    const isSelected = selectedConversation?._id === conversation?._id;
+    const {onlineUsers} = useSocketContext();
+    const isOnline = onlineUsers.includes(conversation._id);
+    
+    return (
+        <>
+            <div 
+                className={`flex gap-2 items-center hover:bg-[#5E81F4] rounded p-2 py-1 cursor-pointer ${isSelected ? "bg-[#5E81F4]" : ""}`} 
+                onClick={() => setSelectedConversation(conversation)}
+            >
+                <div className='avatar relative'>
+                    <div className='w-12 rounded-full'>
+                        <img 
+                            className='w-12 rounded-full' 
+                            src={conversation.profilepic}
+                            alt={conversation.fullName}
+                        />
+                    </div>
+                    
+                    {/* Online indicator dot */}
+                    {isOnline ? (
+                        <span className='absolute w-3 h-3 bg-green-500 rounded-full bottom-0 right-0 border-2 border-white'></span>
+                    ):(<span className='absolute w-3 h-3 bg-red-500 rounded-full bottom-0 right-0 border-2 border-white'></span>)}
+                </div>
                 
+                <div className='flex flex-col flex-1'>
+                    <div>
+                        <p className='font-bold text-gray-50'>{conversation.fullName}</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div className='divider my-0 py-0 h-1'></div>
-    </>
-  )
+
+            {!lastIdx && <div className='divider my-0 py-0 h-1'></div>}
+        </>
+    )
 }
 
 export default Conversation
-// import React from 'react'
-
-// const Conversation = () => {
-//   return (
-//     <>
-//     <div className='flex gap-2 items-center hover:bg-[#5E81F4] rounded p-2 py-1 cursor-pointer'>
-//         <div className='avatar online'>
-//             <div className='w-12 rounded-full'>
-//                 <img className='w-12 rounded full' src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp">
-//                 </img>
-//             </div>
-//         </div>
-//         <div className='flex flex-col flex-1'>
-//             <div>
-//                 <p className='font-bold text-gray-50'>John Doe</p>
-                
-//             </div>
-//         </div>
-//     </div>
-//     <div className='divider my-0 py-0 h-1'></div>
-//     </>
-//   )
-// }
-
-// export default Conversation

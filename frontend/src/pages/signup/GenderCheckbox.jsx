@@ -1,6 +1,6 @@
 import React from 'react'
 
-const GenderCheckbox = () => {
+const GenderCheckbox = ({onCheckBoxChange,selectedGender}) => {
   return (
     <div className="flex justify-center gap-4">
         <div className='form-control'>
@@ -10,6 +10,8 @@ const GenderCheckbox = () => {
                     type="radio" 
                     className="checkbox checkbox-primary border-[#5E81F4] checked:bg-[#5E81F4]"
                     name="gender"
+                    checked={selectedGender==="male"}
+                    onChange={()=>onCheckBoxChange("male")}
                 />
             </label>
         </div>
@@ -20,6 +22,8 @@ const GenderCheckbox = () => {
                     type="radio" 
                     className="checkbox checkbox-primary border-[#5E81F4] checked:bg-[#5E81F4]"
                     name="gender"
+                    checked={selectedGender==="female"}
+                    onChange={()=>onCheckBoxChange("female")}
                 />
             </label>
         </div>

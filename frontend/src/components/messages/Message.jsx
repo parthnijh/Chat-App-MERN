@@ -1,18 +1,105 @@
 import React from 'react'
+import { useAuthContext } from '../../context/AuthContext'
+import useConversation from '../../zustand/useConversation';
+import { extractTime } from '../../utils/extractTime';
 
-const Message = () => {
+const Message = ({message}) => {
+  const {authUser} = useAuthContext();
+  const {selectedConversation} = useConversation();
+  const fromMe = message.senderId === authUser._id;
+  const formatedTime=extractTime(message.createdAt)
+  
+  const containerClassName = fromMe 
+    ? "flex justify-end" 
+    : "flex justify-start";
+  
+  const profilePic = fromMe 
+    ? authUser.profilepic 
+    : selectedConversation.profilepic;
+  
+  const bubbleBgColor = fromMe 
+    ? 'bg-[#5E81F4]' 
+    : 'bg-[#15191e]';
+  
+  const textColor = fromMe 
+    ? 'text-white' 
+    : 'text-white';
+
   return (
-    <div className='chat chat-end'>
-        <div className='chat-image avatar'>
-            <div className='w-10 rounded-full'>
-                <img src={"https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}></img>
-            </div>
+    <div className={`w-full mb-4 ${containerClassName}`}>
+      <div className={`flex max-w-[80%] ${fromMe ? 'flex-row-reverse' : 'flex-row'}`}>
+        <div className='avatar self-end mb-1 mx-2'>
+          <div className='w-8 h-8 rounded-full'>
+            <img src={profilePic} alt="Profile" />
+          </div>
         </div>
-        <div className={`chat-bubble text-white bg-[#5E81F4]`}>Hi Whats Up</div> 
-        <div className={`chat-footer opacity-50 text-xs flex gap-1 items-center`}>12:42</div> 
-
+        
+        <div className="flex flex-col">
+          <div className={`chat-bubble px-4 py-2 rounded-2xl ${bubbleBgColor} ${textColor}`}>
+            {message.message}
+          </div>
+          <div className={`text-xs opacity-50 mt-1 ${fromMe ? 'text-right' : 'text-left'}`}>
+            {formatedTime}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
 
 export default Message
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
